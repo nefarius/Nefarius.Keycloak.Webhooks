@@ -4,7 +4,7 @@
 [![Nuget](https://img.shields.io/nuget/v/Nefarius.Keycloak.Webhooks)](https://www.nuget.org/packages/Nefarius.Keycloak.Webhooks/)
 [![Nuget](https://img.shields.io/nuget/dt/Nefarius.Keycloak.Webhooks)](https://www.nuget.org/packages/Nefarius.Keycloak.Webhooks/)
 
-Receive and process [Keycloak `ext-event-webhook`](https://github.com/vymalo/keycloak-webhook) events as strongly-typed C# objects — no framework lock-in.
+Receive and process [Keycloak `keycloak-events`](https://github.com/p2-inc/keycloak-events) webhook events as strongly-typed C# objects — no framework lock-in.
 
 ## About
 
@@ -162,5 +162,5 @@ MIT — see [LICENSE](LICENSE).
 
 ## Sources & Credits
 
-- [Keycloak `ext-event-webhook` extension](https://github.com/vymalo/keycloak-webhook) — the Keycloak plugin that delivers webhook events this library parses.
+- [p2-inc/keycloak-events](https://github.com/p2-inc/keycloak-events) — the Keycloak extension that delivers webhook events this library parses.
 - [FastEndpoints](https://fast-endpoints.com/) — HTTP framework used by the optional integration package.
