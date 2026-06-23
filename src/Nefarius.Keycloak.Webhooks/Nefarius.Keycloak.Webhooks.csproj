@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Description>
+            Dependency-free library for receiving and parsing Keycloak webhook events (via the ext-event-webhook Keycloak
+            extension). Provides raw payload DTOs, strongly-typed event models, event-type constants, a JSON parser, and
+            a framework-agnostic dispatch abstraction.
+        </Description>
+        <PackageTags>keycloak;webhook;events;auth;oidc</PackageTags>
+    </PropertyGroup>
+
+    <!-- System.Text.Json is in-box for net8.0+; add the package only for netstandard2.0 consumers -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    </ItemGroup>
+
+</Project>
