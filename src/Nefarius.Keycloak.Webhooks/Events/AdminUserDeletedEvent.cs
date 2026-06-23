@@ -7,6 +7,7 @@ namespace Nefarius.Keycloak.Webhooks.Events;
 /// </summary>
 public sealed class AdminUserDeletedEvent : WebhookBaseEvent
 {
+    /// <summary>Keycloak internal ID of the deleted user.</summary>
     [JsonPropertyName("userId")]
     public Guid UserId { get; set; }
 }

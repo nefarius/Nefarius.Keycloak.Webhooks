@@ -17,11 +17,14 @@ public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
 {
     private readonly KeycloakWebhookOptions _options;
 
+    /// <summary>Initialises the endpoint with the resolved <see cref="KeycloakWebhookOptions" />.</summary>
+    /// <param name="options">Resolved options instance.</param>
     public KeycloakWebhookEndpoint(IOptions<KeycloakWebhookOptions> options)
     {
         _options = options.Value;
     }
 
+    /// <inheritdoc />
     public override void Configure()
     {
         Post(_options.Route);
@@ -32,6 +35,7 @@ public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
         }
     }
 
+    /// <inheritdoc />
     public override async Task HandleAsync(KeycloakWebhookRequest req, CancellationToken ct)
     {
         WebhookBaseEvent? evt = KeycloakWebhookParser.Parse(req);
@@ -45,7 +49,7 @@ public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
     }
 
     /// <summary>
-    ///     Routes the typed event to <see cref="Endpoint{TRequest}.PublishAsync{TEvent}" />.
+    ///     Routes the typed event to <c>PublishAsync&lt;TEvent&gt;</c>.
     ///     A switch on concrete type is used to keep generics statically resolved (AOT-safe).
     /// </summary>
     private Task PublishEventAsync(WebhookBaseEvent evt, CancellationToken ct)

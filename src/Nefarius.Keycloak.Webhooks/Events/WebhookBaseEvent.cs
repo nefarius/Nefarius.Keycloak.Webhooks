@@ -9,18 +9,27 @@ namespace Nefarius.Keycloak.Webhooks.Events;
 /// </summary>
 public abstract class WebhookBaseEvent
 {
+    /// <summary>Event timestamp as Unix epoch milliseconds.</summary>
     [JsonPropertyName("time")]
     public long Time { get; set; }
 
+    /// <summary>ID of the Keycloak realm in which the event occurred.</summary>
     [JsonPropertyName("realmId")]
     public string? RealmId { get; set; }
 
+    /// <summary>Unique identifier of this event instance.</summary>
     [JsonPropertyName("uid")]
     public Guid Uid { get; set; }
 
+    /// <summary>Authentication context of the actor who triggered the event.</summary>
     [JsonPropertyName("authDetails")]
     public AuthDetails AuthDetails { get; set; } = new();
 
+    /// <summary>
+    ///     Full event type string (e.g. <c>access.REGISTER</c> or <c>admin.USER-CREATE</c>).
+    ///     For admin events this is the concatenation of <see cref="ResourceType" /> and <see cref="OperationType" />
+    ///     with an <c>admin.</c> prefix.
+    /// </summary>
     [JsonPropertyName("type")]
     public string? Type { get; set; }
 
@@ -36,7 +45,10 @@ public abstract class WebhookBaseEvent
     [JsonPropertyName("resourcePath")]
     public string? ResourcePath { get; set; }
 
-    /// <summary>JSON-encoded resource snapshot, present on some admin events.</summary>
+    /// <summary>
+    ///     JSON-encoded snapshot of the affected resource.
+    ///     Only populated when <see cref="OperationType" /> is <c>CREATE</c> or <c>UPDATE</c>; <c>null</c> otherwise.
+    /// </summary>
     [JsonPropertyName("representation")]
     public string? Representation { get; set; }
 }
