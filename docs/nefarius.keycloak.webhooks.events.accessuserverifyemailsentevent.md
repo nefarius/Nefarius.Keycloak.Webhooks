@@ -15,6 +15,8 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 
 ### <a id="properties-authdetails"/>**AuthDetails**
 
+Authentication context of the actor who triggered the event.
+
 ```csharp
 public AuthDetails AuthDetails { get; set; }
 ```
@@ -24,6 +26,8 @@ public AuthDetails AuthDetails { get; set; }
 [AuthDetails](./nefarius.keycloak.webhooks.models.authdetails.md)<br>
 
 ### <a id="properties-authmethod"/>**AuthMethod**
+
+Authentication protocol used, e.g. `openid-connect`.
 
 ```csharp
 public string AuthMethod { get; set; }
@@ -35,6 +39,8 @@ public string AuthMethod { get; set; }
 
 ### <a id="properties-codeid"/>**CodeId**
 
+OIDC auth code / session correlation id.
+
 ```csharp
 public Guid CodeId { get; set; }
 ```
@@ -44,6 +50,8 @@ public Guid CodeId { get; set; }
 [Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
 
 ### <a id="properties-email"/>**Email**
+
+Destination e-mail address to which the verification mail was sent.
 
 ```csharp
 public string Email { get; set; }
@@ -67,6 +75,8 @@ public string OperationType { get; set; }
 
 ### <a id="properties-realmid"/>**RealmId**
 
+ID of the Keycloak realm in which the event occurred.
+
 ```csharp
 public string RealmId { get; set; }
 ```
@@ -76,6 +86,8 @@ public string RealmId { get; set; }
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-redirecturi"/>**RedirectUri**
+
+Client redirect URI that was active during the flow.
 
 ```csharp
 public string RedirectUri { get; set; }
@@ -87,6 +99,8 @@ public string RedirectUri { get; set; }
 
 ### <a id="properties-rememberme"/>**RememberMe**
 
+Whether the user selected "remember me" (`true`/`false` as string).
+
 ```csharp
 public string RememberMe { get; set; }
 ```
@@ -97,7 +111,8 @@ public string RememberMe { get; set; }
 
 ### <a id="properties-representation"/>**Representation**
 
-JSON-encoded resource snapshot, present on some admin events.
+JSON-encoded snapshot of the affected resource.
+ Only populated when [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype) is `CREATE` or `UPDATE`; `null` otherwise.
 
 ```csharp
 public string Representation { get; set; }
@@ -133,6 +148,8 @@ public string ResourceType { get; set; }
 
 ### <a id="properties-responsemode"/>**ResponseMode**
 
+OIDC response mode, e.g. `fragment` or `query`.
+
 ```csharp
 public string ResponseMode { get; set; }
 ```
@@ -142,6 +159,8 @@ public string ResponseMode { get; set; }
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-responsetype"/>**ResponseType**
+
+OIDC response type requested by the client, e.g. `code`.
 
 ```csharp
 public string ResponseType { get; set; }
@@ -153,6 +172,8 @@ public string ResponseType { get; set; }
 
 ### <a id="properties-time"/>**Time**
 
+Event timestamp as Unix epoch milliseconds.
+
 ```csharp
 public long Time { get; set; }
 ```
@@ -162,6 +183,10 @@ public long Time { get; set; }
 [Int64](https://learn.microsoft.com/dotnet/api/system.int64)<br>
 
 ### <a id="properties-type"/>**Type**
+
+Full event type string (e.g. `access.REGISTER` or `admin.USER-CREATE`).
+ For admin events this is the concatenation of [WebhookBaseEvent.ResourceType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#resourcetype) and [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype)
+ with an `admin.` prefix.
 
 ```csharp
 public string Type { get; set; }
@@ -173,6 +198,8 @@ public string Type { get; set; }
 
 ### <a id="properties-uid"/>**Uid**
 
+Unique identifier of this event instance.
+
 ```csharp
 public Guid Uid { get; set; }
 ```
@@ -182,6 +209,8 @@ public Guid Uid { get; set; }
 [Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
 
 ### <a id="properties-username"/>**Username**
+
+Username of the user to whom the verification e-mail was dispatched.
 
 ```csharp
 public string Username { get; set; }

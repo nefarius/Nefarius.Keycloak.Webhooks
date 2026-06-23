@@ -15,6 +15,8 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 
 ### <a id="properties-clientid"/>**ClientId**
 
+Client (application) ID that initiated the request.
+
 ```csharp
 public string ClientId { get; set; }
 ```
@@ -24,6 +26,8 @@ public string ClientId { get; set; }
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-ipaddress"/>**IpAddress**
+
+IP address of the actor.
 
 ```csharp
 public string IpAddress { get; set; }
@@ -35,6 +39,8 @@ public string IpAddress { get; set; }
 
 ### <a id="properties-realmid"/>**RealmId**
 
+ID of the realm in which the authentication took place.
+
 ```csharp
 public string RealmId { get; set; }
 ```
@@ -44,6 +50,8 @@ public string RealmId { get; set; }
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-sessionid"/>**SessionId**
+
+Keycloak session ID associated with the request.
 
 ```csharp
 public string SessionId { get; set; }
@@ -55,6 +63,8 @@ public string SessionId { get; set; }
 
 ### <a id="properties-userid"/>**UserId**
 
+Keycloak internal ID of the authenticated actor (user or service account).
+
 ```csharp
 public Guid UserId { get; set; }
 ```
@@ -64,6 +74,8 @@ public Guid UserId { get; set; }
 [Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
 
 ### <a id="properties-username"/>**Username**
+
+Username of the authenticated actor.
 
 ```csharp
 public string Username { get; set; }

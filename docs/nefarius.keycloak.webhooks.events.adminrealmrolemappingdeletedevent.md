@@ -15,6 +15,8 @@ Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [
 
 ### <a id="properties-authdetails"/>**AuthDetails**
 
+Authentication context of the actor who triggered the event.
+
 ```csharp
 public AuthDetails AuthDetails { get; set; }
 ```
@@ -37,6 +39,8 @@ public string OperationType { get; set; }
 
 ### <a id="properties-realmid"/>**RealmId**
 
+ID of the Keycloak realm in which the event occurred.
+
 ```csharp
 public string RealmId { get; set; }
 ```
@@ -47,7 +51,8 @@ public string RealmId { get; set; }
 
 ### <a id="properties-representation"/>**Representation**
 
-JSON-encoded resource snapshot, present on some admin events.
+JSON-encoded snapshot of the affected resource.
+ Only populated when [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype) is `CREATE` or `UPDATE`; `null` otherwise.
 
 ```csharp
 public string Representation { get; set; }
@@ -83,6 +88,8 @@ public string ResourceType { get; set; }
 
 ### <a id="properties-time"/>**Time**
 
+Event timestamp as Unix epoch milliseconds.
+
 ```csharp
 public long Time { get; set; }
 ```
@@ -93,6 +100,10 @@ public long Time { get; set; }
 
 ### <a id="properties-type"/>**Type**
 
+Full event type string (e.g. `access.REGISTER` or `admin.USER-CREATE`).
+ For admin events this is the concatenation of [WebhookBaseEvent.ResourceType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#resourcetype) and [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype)
+ with an `admin.` prefix.
+
 ```csharp
 public string Type { get; set; }
 ```
@@ -102,6 +113,8 @@ public string Type { get; set; }
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-uid"/>**Uid**
+
+Unique identifier of this event instance.
 
 ```csharp
 public Guid Uid { get; set; }
