@@ -12,6 +12,18 @@ namespace Nefarius.Keycloak.Webhooks;
 public abstract class KeycloakWebhookDispatcher : IKeycloakWebhookEventHandler
 {
     /// <inheritdoc />
+    public virtual Task OnUserEventAsync(UserWebhookEvent evt, CancellationToken ct = default)
+        => Task.CompletedTask;
+
+    /// <inheritdoc />
+    public virtual Task OnAdminEventAsync(AdminWebhookEvent evt, CancellationToken ct = default)
+        => Task.CompletedTask;
+
+    /// <inheritdoc />
+    public virtual Task OnCustomEventAsync(CustomWebhookEvent evt, CancellationToken ct = default)
+        => Task.CompletedTask;
+
+    /// <inheritdoc />
     public virtual Task OnAccessUserRegisteredAsync(AccessUserRegisteredEvent evt, CancellationToken ct = default)
         => Task.CompletedTask;
 
@@ -83,6 +95,9 @@ public abstract class KeycloakWebhookDispatcher : IKeycloakWebhookEventHandler
             AdminUserDeletedEvent e => OnAdminUserDeletedAsync(e, ct),
             AdminRealmRoleMappingCreatedEvent e => OnAdminRealmRoleMappingCreatedAsync(e, ct),
             AdminRealmRoleMappingDeletedEvent e => OnAdminRealmRoleMappingDeletedAsync(e, ct),
+            UserWebhookEvent e => OnUserEventAsync(e, ct),
+            AdminWebhookEvent e => OnAdminEventAsync(e, ct),
+            CustomWebhookEvent e => OnCustomEventAsync(e, ct),
             null => OnUnknownEventAsync(null, ct),
             _ => OnUnknownEventAsync(evt.Type, ct)
         };

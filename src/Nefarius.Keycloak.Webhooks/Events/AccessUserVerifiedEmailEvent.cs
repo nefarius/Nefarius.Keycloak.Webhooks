@@ -5,7 +5,7 @@ namespace Nefarius.Keycloak.Webhooks.Events;
 /// <summary>
 ///     A user has successfully verified their e-mail address (<c>access.VERIFY_EMAIL</c>).
 /// </summary>
-public sealed class AccessUserVerifiedEmailEvent : WebhookBaseEvent
+public sealed class AccessUserVerifiedEmailEvent : UserWebhookEvent
 {
     /// <summary>Authentication protocol used, e.g. <c>openid-connect</c>.</summary>
     [JsonPropertyName("auth_method")]
@@ -13,7 +13,7 @@ public sealed class AccessUserVerifiedEmailEvent : WebhookBaseEvent
 
     /// <summary>ID of the action token that was consumed to verify the address.</summary>
     [JsonPropertyName("token_id")]
-    public Guid TokenId { get; set; }
+    public string? TokenId { get; set; }
 
     /// <summary>Required action that was executed, e.g. <c>VERIFY_EMAIL</c>.</summary>
     [JsonPropertyName("action")]
@@ -33,7 +33,7 @@ public sealed class AccessUserVerifiedEmailEvent : WebhookBaseEvent
 
     /// <summary>OIDC auth code / session correlation id.</summary>
     [JsonPropertyName("code_id")]
-    public Guid CodeId { get; set; }
+    public string? CodeId { get; set; }
 
     /// <summary>E-mail address that was verified.</summary>
     [JsonPropertyName("email")]

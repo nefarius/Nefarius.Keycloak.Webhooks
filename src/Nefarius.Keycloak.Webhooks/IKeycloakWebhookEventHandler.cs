@@ -9,6 +9,15 @@ namespace Nefarius.Keycloak.Webhooks;
 /// </summary>
 public interface IKeycloakWebhookEventHandler
 {
+    /// <summary>Called for a native user event without a more specific projection.</summary>
+    Task OnUserEventAsync(UserWebhookEvent evt, CancellationToken ct = default);
+
+    /// <summary>Called for a native admin event without a more specific projection.</summary>
+    Task OnAdminEventAsync(AdminWebhookEvent evt, CancellationToken ct = default);
+
+    /// <summary>Called for an application-defined event published through Keycloak.</summary>
+    Task OnCustomEventAsync(CustomWebhookEvent evt, CancellationToken ct = default);
+
     /// <summary>Called when a user self-registers.</summary>
     Task OnAccessUserRegisteredAsync(AccessUserRegisteredEvent evt, CancellationToken ct = default);
 
@@ -33,6 +42,6 @@ public interface IKeycloakWebhookEventHandler
     /// <summary>Called when a realm role is removed from a user.</summary>
     Task OnAdminRealmRoleMappingDeletedAsync(AdminRealmRoleMappingDeletedEvent evt, CancellationToken ct = default);
 
-    /// <summary>Called for any event type not recognised by the parser (i.e. <see cref="KeycloakWebhookParser.Parse(Models.KeycloakWebhookRequest)" /> returned <c>null</c>).</summary>
+    /// <summary>Called when a payload does not contain enough information to classify an event.</summary>
     Task OnUnknownEventAsync(string? eventType, CancellationToken ct = default);
 }

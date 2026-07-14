@@ -1,9 +1,13 @@
+using System.Text;
+using System.Text.Json;
+
 using FastEndpoints;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
+using Nefarius.Keycloak.Webhooks.Authentication;
 using Nefarius.Keycloak.Webhooks.Events;
-using Nefarius.Keycloak.Webhooks.Models;
 
 namespace Nefarius.Keycloak.Webhooks.FastEndpoints;
 
@@ -13,15 +17,20 @@ namespace Nefarius.Keycloak.Webhooks.FastEndpoints;
 ///     via the FastEndpoints internal event bus, so <c>IEventHandler&lt;T&gt;</c> implementations are
 ///     invoked automatically.
 /// </summary>
-public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
+public class KeycloakWebhookEndpoint : EndpointWithoutRequest
 {
     private readonly KeycloakWebhookOptions _options;
+    private readonly KeycloakWebhookAuthenticator _authenticator;
 
     /// <summary>Initialises the endpoint with the resolved <see cref="KeycloakWebhookOptions" />.</summary>
     /// <param name="options">Resolved options instance.</param>
-    public KeycloakWebhookEndpoint(IOptions<KeycloakWebhookOptions> options)
+    /// <param name="authenticator">Verifier for realm-signed bearer webhook tokens.</param>
+    public KeycloakWebhookEndpoint(
+        IOptions<KeycloakWebhookOptions> options,
+        KeycloakWebhookAuthenticator authenticator)
     {
         _options = options.Value;
+        _authenticator = authenticator;
     }
 
     /// <inheritdoc />
@@ -36,16 +45,87 @@ public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
     }
 
     /// <inheritdoc />
-    public override async Task HandleAsync(KeycloakWebhookRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
-        WebhookBaseEvent? evt = KeycloakWebhookParser.Parse(req);
-
-        if (evt is not null)
+        if (HttpContext.Request.ContentLength > _options.MaxRequestBodySize)
         {
-            await PublishEventAsync(evt, ct);
+            await WriteResponseAsync(413, "Webhook payload is too large.", ct);
+            return;
         }
 
+        byte[] body;
+        using (MemoryStream stream = new())
+        {
+            await HttpContext.Request.Body.CopyToAsync(stream, ct);
+            if (stream.Length > _options.MaxRequestBodySize)
+            {
+                await WriteResponseAsync(413, "Webhook payload is too large.", ct);
+                return;
+            }
+
+            body = stream.ToArray();
+        }
+
+        KeycloakWebhookAuthenticationResult authentication = await AuthenticateAsync(body, ct);
+        if (!authentication.Succeeded)
+        {
+            await WriteResponseAsync(401, authentication.Error ?? "Webhook authentication failed.", ct);
+            return;
+        }
+
+        WebhookBaseEvent? evt;
+        try
+        {
+            evt = KeycloakWebhookParser.Parse(Encoding.UTF8.GetString(body));
+        }
+        catch (JsonException)
+        {
+            await WriteResponseAsync(400, "Malformed webhook JSON.", ct);
+            return;
+        }
+
+        if (evt is null)
+        {
+            await WriteResponseAsync(400, "The payload does not identify an event type.", ct);
+            return;
+        }
+
+        await PublishEventAsync(evt, ct);
         await Send.OkAsync("OK", ct);
+    }
+
+    private Task<KeycloakWebhookAuthenticationResult> AuthenticateAsync(
+        ReadOnlyMemory<byte> body,
+        CancellationToken ct)
+    {
+        switch (_options.AuthenticationMode)
+        {
+            case KeycloakWebhookAuthenticationMode.None:
+                return Task.FromResult(KeycloakWebhookAuthenticationResult.Success());
+            case KeycloakWebhookAuthenticationMode.HmacSha1:
+            case KeycloakWebhookAuthenticationMode.HmacSha256:
+                return Task.FromResult(KeycloakWebhookAuthenticator.VerifyHmac(
+                    body,
+                    HttpContext.Request.Headers["X-Keycloak-Signature"].ToString(),
+                    _options.HmacSecret ?? string.Empty,
+                    _options.AuthenticationMode));
+            case KeycloakWebhookAuthenticationMode.Bearer:
+                string authorization = HttpContext.Request.Headers.Authorization.ToString();
+                string? token = authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                    ? authorization.Substring("Bearer ".Length).Trim()
+                    : null;
+                return _authenticator.VerifyBearerAsync(body, token, _options.Jwt, ct);
+            default:
+                return Task.FromResult(
+                    KeycloakWebhookAuthenticationResult.Failure("Unsupported authentication mode."));
+        }
+    }
+
+    private async Task WriteResponseAsync(int statusCode, string message, CancellationToken ct)
+    {
+        HttpContext.Response.StatusCode = statusCode;
+        HttpContext.Response.ContentType = "text/plain";
+        await HttpContext.Response.WriteAsync(message, ct);
     }
 
     /// <summary>
@@ -64,7 +144,10 @@ public class KeycloakWebhookEndpoint : Endpoint<KeycloakWebhookRequest>
             AdminUserDeletedEvent e => PublishAsync(e, cancellation: ct),
             AdminRealmRoleMappingCreatedEvent e => PublishAsync(e, cancellation: ct),
             AdminRealmRoleMappingDeletedEvent e => PublishAsync(e, cancellation: ct),
-            _ => Task.CompletedTask
+            UserWebhookEvent e => PublishAsync(e, cancellation: ct),
+            AdminWebhookEvent e => PublishAsync(e, cancellation: ct),
+            CustomWebhookEvent e => PublishAsync(e, cancellation: ct),
+            _ => PublishAsync(evt, cancellation: ct)
         };
     }
 }
