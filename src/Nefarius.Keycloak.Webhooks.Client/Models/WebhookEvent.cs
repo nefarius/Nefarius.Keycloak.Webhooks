@@ -6,6 +6,10 @@ namespace Nefarius.Keycloak.Webhooks.Client.Models;
 /// <summary>
 /// Describes caller-supplied data for a custom webhook event.
 /// </summary>
+/// <remarks>
+/// <see cref="Type"/> is required by the server. Nullable properties are omitted from the request when
+/// they are <see langword="null"/>.
+/// </remarks>
 public sealed class CustomWebhookEvent
 {
     /// <summary>
@@ -27,10 +31,10 @@ public sealed class CustomWebhookEvent
     public IDictionary<string, string>? Details { get; set; }
 
     /// <summary>
-    /// Gets or sets an application-defined event identifier.
+    /// Gets or sets an application-defined event delivery identifier.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Id { get; set; }
+    public string? Uid { get; set; }
 
     /// <summary>
     /// Gets or sets an optional resource type.

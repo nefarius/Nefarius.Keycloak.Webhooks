@@ -23,7 +23,7 @@ The supplied [HttpClient](https://learn.microsoft.com/dotnet/api/system.net.http
 Initializes a new instance of the [KeycloakWebhooksClient](./nefarius.keycloak.webhooks.client.keycloakwebhooksclient.md) class.
 
 ```csharp
-public KeycloakWebhooksClient(HttpClient httpClient, JsonSerializerOptions serializerOptions)
+public KeycloakWebhooksClient(HttpClient httpClient, JsonSerializerOptions? serializerOptions)
 ```
 
 #### Parameters
@@ -46,7 +46,7 @@ Optional JSON serializer options. Camel-case names and case-insensitive reads ar
 Counts webhook subscriptions in a realm.
 
 ```csharp
-public Task<Int64> CountWebhooksAsync(string realm, string search, CancellationToken cancellationToken)
+public Task<Int64> CountWebhooksAsync(string realm, string? search, CancellationToken cancellationToken)
 ```
 
 #### Parameters
@@ -69,7 +69,7 @@ The number of webhook subscriptions.
 Creates a webhook subscription.
 
 ```csharp
-public Task<Uri> CreateWebhookAsync(string realm, WebhookSubscription subscription, CancellationToken cancellationToken)
+public Task<Uri?> CreateWebhookAsync(string realm, WebhookSubscription subscription, CancellationToken cancellationToken)
 ```
 
 #### Parameters
@@ -164,7 +164,7 @@ The webhook subscription.
 Lists webhook subscriptions in a realm.
 
 ```csharp
-public Task<IReadOnlyList<WebhookSubscription>> GetWebhooksAsync(string realm, PaginationOptions pagination, CancellationToken cancellationToken)
+public Task<IReadOnlyList<WebhookSubscription>> GetWebhooksAsync(string realm, PaginationOptions? pagination, CancellationToken cancellationToken)
 ```
 
 #### Parameters
@@ -236,7 +236,7 @@ The detailed delivery attempt.
 Lists delivery attempts for a webhook subscription.
 
 ```csharp
-public Task<IReadOnlyList<WebhookSendSummary>> GetWebhookSendsAsync(string realm, string webhookId, PaginationOptions pagination, CancellationToken cancellationToken)
+public Task<IReadOnlyList<WebhookSendSummary>> GetWebhookSendsAsync(string realm, string webhookId, PaginationOptions? pagination, CancellationToken cancellationToken)
 ```
 
 #### Parameters

@@ -132,18 +132,6 @@ public string StackTrace { get; }
 
 ### <a id="properties-statuscode"/>**StatusCode**
 
-Gets the HTTP response status code.
-
-```csharp
-public HttpStatusCode StatusCode { get; }
-```
-
-#### Property Value
-
-[HttpStatusCode](https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode)<br>
-
-### <a id="properties-statuscode"/>**StatusCode**
-
 ```csharp
 public Nullable<HttpStatusCode> StatusCode { get; }
 ```

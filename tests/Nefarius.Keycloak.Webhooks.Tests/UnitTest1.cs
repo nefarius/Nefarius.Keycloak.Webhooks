@@ -113,6 +113,7 @@ public class WebhookCompatibilityTests
         };
 
         Assert.True((await authenticator.VerifyBearerAsync(body, token, options)).Succeeded);
+        Assert.False((await authenticator.VerifyBearerAsync(body, token, options)).Succeeded);
 
         body[0] ^= 1;
         Assert.False((await authenticator.VerifyBearerAsync(body, token, options)).Succeeded);

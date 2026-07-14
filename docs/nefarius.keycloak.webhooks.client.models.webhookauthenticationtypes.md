@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Authenticates webhook payloads with a realm-signed bearer JWT.
 
 ```csharp
-public static string Bearer;
+public const string Bearer = "bearer";
 ```
 
 ### <a id="fields-hmac"/>**Hmac**
@@ -26,7 +26,7 @@ public static string Bearer;
 Signs webhook payloads with a shared-secret HMAC.
 
 ```csharp
-public static string Hmac;
+public const string Hmac = "hmac";
 ```
 
 ### <a id="fields-none"/>**None**
@@ -34,5 +34,5 @@ public static string Hmac;
 Sends webhook payloads without authentication.
 
 ```csharp
-public static string None;
+public const string None = "none";
 ```

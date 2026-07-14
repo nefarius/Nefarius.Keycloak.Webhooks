@@ -10,8 +10,11 @@ namespace Nefarius.Keycloak.Webhooks.Authentication;
 /// <summary>Verifies authentication data emitted by <c>ext-event-webhook</c>.</summary>
 public sealed class KeycloakWebhookAuthenticator
 {
+    private const int MaximumReplayCacheEntries = 10_000;
     private readonly HttpClient _httpClient;
     private readonly SemaphoreSlim _jwksLock = new(1, 1);
+    private readonly object _replayCacheLock = new();
+    private readonly Dictionary<string, DateTimeOffset> _usedTokenIds = new(StringComparer.Ordinal);
     private IReadOnlyCollection<SecurityKey>? _cachedKeys;
     private Uri? _cachedJwksUri;
     private DateTimeOffset _keysExpireAt;
@@ -94,6 +97,13 @@ public sealed class KeycloakWebhookAuthenticator
             return KeycloakWebhookAuthenticationResult.Failure("JWT issuer and audience must be configured.");
         }
 
+        if (options.ValidAlgorithms.Count != 1 ||
+            !options.ValidAlgorithms.Contains(SecurityAlgorithms.RsaSha256, StringComparer.Ordinal))
+        {
+            return KeycloakWebhookAuthenticationResult.Failure(
+                "Bearer webhook authentication only supports RS256.");
+        }
+
         try
         {
             IReadOnlyCollection<SecurityKey> signingKeys = await GetSigningKeysAsync(options, cancellationToken)
@@ -109,7 +119,7 @@ public sealed class KeycloakWebhookAuthenticator
                 RequireSignedTokens = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKeys = signingKeys,
-                ValidAlgorithms = options.ValidAlgorithms,
+                ValidAlgorithms = new[] { SecurityAlgorithms.RsaSha256 },
                 ClockSkew = options.ClockSkew
             };
 
@@ -117,8 +127,7 @@ public sealed class KeycloakWebhookAuthenticator
             TokenValidationResult validation = await handler.ValidateTokenAsync(token, parameters).ConfigureAwait(false);
             if (!validation.IsValid)
             {
-                return KeycloakWebhookAuthenticationResult.Failure(
-                    validation.Exception?.Message ?? "The bearer token is invalid.");
+                return KeycloakWebhookAuthenticationResult.Failure("The bearer token is invalid.");
             }
 
             JsonWebToken jwt = new(token);
@@ -151,18 +160,59 @@ public sealed class KeycloakWebhookAuthenticator
                     "The request_body_sha256 claim is not hexadecimal.");
             }
 
-            return FixedTimeEquals(expectedHash, claimedHashBytes)
-                ? KeycloakWebhookAuthenticationResult.Success()
-                : KeycloakWebhookAuthenticationResult.Failure(
+            if (!FixedTimeEquals(expectedHash, claimedHashBytes))
+            {
+                return KeycloakWebhookAuthenticationResult.Failure(
                     "The bearer token is not bound to this request body.");
+            }
+
+            DateTimeOffset tokenExpiry = new(
+                DateTime.SpecifyKind(jwt.ValidTo, DateTimeKind.Utc));
+            if (!TryAcceptTokenId(jwt.Id, tokenExpiry.Add(options.ClockSkew)))
+            {
+                return KeycloakWebhookAuthenticationResult.Failure(
+                    "The bearer token has already been used.");
+            }
+
+            return KeycloakWebhookAuthenticationResult.Success();
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return KeycloakWebhookAuthenticationResult.Failure($"JWT validation failed: {ex.Message}");
+            return KeycloakWebhookAuthenticationResult.Failure("Bearer token validation failed.");
+        }
+    }
+
+    private bool TryAcceptTokenId(string tokenId, DateTimeOffset expiresAt)
+    {
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        lock (_replayCacheLock)
+        {
+            foreach (string expiredId in _usedTokenIds
+                         .Where(entry => entry.Value <= now)
+                         .Select(entry => entry.Key)
+                         .ToArray())
+            {
+                _usedTokenIds.Remove(expiredId);
+            }
+
+            if (_usedTokenIds.ContainsKey(tokenId))
+            {
+                return false;
+            }
+
+            while (_usedTokenIds.Count >= MaximumReplayCacheEntries)
+            {
+                string oldestId = _usedTokenIds.Aggregate(
+                    (oldest, candidate) => candidate.Value < oldest.Value ? candidate : oldest).Key;
+                _usedTokenIds.Remove(oldestId);
+            }
+
+            _usedTokenIds.Add(tokenId, expiresAt);
+            return true;
         }
     }
 
@@ -216,6 +266,9 @@ public sealed class KeycloakWebhookAuthenticator
 
     private static byte[] FromHex(string value)
     {
+#if NET8_0_OR_GREATER
+        return Convert.FromHexString(value);
+#else
         if (value.Length % 2 != 0)
         {
             throw new FormatException();
@@ -228,10 +281,14 @@ public sealed class KeycloakWebhookAuthenticator
         }
 
         return bytes;
+#endif
     }
 
     private static bool FixedTimeEquals(byte[] left, byte[] right)
     {
+#if NET8_0_OR_GREATER
+        return CryptographicOperations.FixedTimeEquals(left, right);
+#else
         int difference = left.Length ^ right.Length;
         int length = Math.Min(left.Length, right.Length);
         for (int i = 0; i < length; i++)
@@ -240,5 +297,6 @@ public sealed class KeycloakWebhookAuthenticator
         }
 
         return difference == 0;
+#endif
     }
 }

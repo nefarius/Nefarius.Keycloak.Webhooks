@@ -43,20 +43,39 @@ public sealed class ClientTests
             new CustomWebhookEvent
             {
                 Type = "billing.invoice-issued",
+                Uid = "custom-event",
                 Details = new Dictionary<string, string> { ["id"] = "42" }
             });
 
         Assert.Equal(13, handler.Requests.Count);
-        Assert.All(handler.Requests, request => Assert.StartsWith("/auth/realms/realm%20name/", request.Uri.PathAndQuery));
-        Assert.Contains(handler.Requests, request =>
-            request.Method == HttpMethod.Get &&
-            request.Uri.PathAndQuery.EndsWith("/webhooks?first=1&max=10", StringComparison.Ordinal));
-        Assert.Contains(handler.Requests, request =>
-            request.Method == HttpMethod.Post &&
-            request.Uri.AbsolutePath.EndsWith("/events", StringComparison.Ordinal) &&
-            request.Body!.Contains("\"type\":\"billing.invoice-issued\"", StringComparison.Ordinal));
-        Assert.Contains(handler.Requests, request =>
-            request.Uri.AbsolutePath.Contains("hook%2Fid/sends/send%2Fid/resend", StringComparison.OrdinalIgnoreCase));
+        string[] expectedRequests =
+        {
+            "GET /auth/realms/realm%20name/webhooks?first=1&max=10",
+            "GET /auth/realms/realm%20name/webhooks/count?search=needle",
+            "POST /auth/realms/realm%20name/webhooks",
+            "GET /auth/realms/realm%20name/webhooks/hook%2Fid",
+            "PUT /auth/realms/realm%20name/webhooks/hook%2Fid",
+            "DELETE /auth/realms/realm%20name/webhooks/hook%2Fid",
+            "GET /auth/realms/realm%20name/webhooks/hook%2Fid/secret",
+            "GET /auth/realms/realm%20name/webhooks/hook%2Fid/sends?max=5",
+            "GET /auth/realms/realm%20name/webhooks/hook%2Fid/sends/send%2Fid",
+            "POST /auth/realms/realm%20name/webhooks/hook%2Fid/sends/send%2Fid/resend",
+            "GET /auth/realms/realm%20name/webhooks/payload/admin/event%2Fid",
+            "GET /auth/realms/realm%20name/webhooks/sends/user/event%2Fid",
+            "POST /auth/realms/realm%20name/events"
+        };
+        string[] actualRequests = handler.Requests
+            .Select(request => $"{request.Method.Method} {request.Uri.PathAndQuery}")
+            .ToArray();
+        Assert.Equal(expectedRequests.Order(), actualRequests.Order());
+
+        RecordedRequest customEventRequest = Assert.Single(
+            handler.Requests,
+            request => request.Method == HttpMethod.Post &&
+                       request.Uri.AbsolutePath.EndsWith("/events", StringComparison.Ordinal));
+        Assert.Contains("\"type\":\"billing.invoice-issued\"", customEventRequest.Body);
+        Assert.Contains("\"uid\":\"custom-event\"", customEventRequest.Body);
+        Assert.DoesNotContain("\"id\":\"custom-event\"", customEventRequest.Body);
     }
 
     [Fact]
@@ -74,6 +93,7 @@ public sealed class ClientTests
                 new CustomWebhookEvent { Type = "access.LOGIN" }));
 
         Assert.Equal(HttpStatusCode.Conflict, exception.StatusCode);
+        Assert.Equal(HttpStatusCode.Conflict, ((HttpRequestException)exception).StatusCode);
         Assert.Equal("Reserved event type.", exception.ResponseBody);
         Assert.Equal("test", exception.ResponseHeaders["X-Test"].Single());
     }

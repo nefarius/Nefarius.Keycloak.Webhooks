@@ -11,6 +11,11 @@ public sealed class CustomWebhookEvent
 Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [CustomWebhookEvent](./nefarius.keycloak.webhooks.client.models.customwebhookevent.md)<br>
 Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.nullablecontextattribute), [NullableAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.nullableattribute)
 
+**Remarks:**
+
+[CustomWebhookEvent.Type](./nefarius.keycloak.webhooks.client.models.customwebhookevent.md#type) is required by the server. Nullable properties are omitted from the request when
+ they are `null`.
+
 ## Properties
 
 ### <a id="properties-additionalproperties"/>**AdditionalProperties**
@@ -18,7 +23,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets additional JSON properties included in the custom event.
 
 ```csharp
-public IDictionary<String, JsonElement> AdditionalProperties { get; set; }
+public IDictionary<String, JsonElement>? AdditionalProperties { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +35,7 @@ public IDictionary<String, JsonElement> AdditionalProperties { get; set; }
 Gets or sets application-defined string details.
 
 ```csharp
-public IDictionary<String, String> Details { get; set; }
+public IDictionary<String, String>? Details { get; set; }
 ```
 
 #### Property Value
@@ -42,19 +47,7 @@ public IDictionary<String, String> Details { get; set; }
 Gets or sets an optional error value.
 
 ```csharp
-public string Error { get; set; }
-```
-
-#### Property Value
-
-[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
-
-### <a id="properties-id"/>**Id**
-
-Gets or sets an application-defined event identifier.
-
-```csharp
-public string Id { get; set; }
+public string? Error { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +59,7 @@ public string Id { get; set; }
 Gets or sets an optional operation type.
 
 ```csharp
-public string OperationType { get; set; }
+public string? OperationType { get; set; }
 ```
 
 #### Property Value
@@ -78,7 +71,7 @@ public string OperationType { get; set; }
 Gets or sets an optional serialized resource representation.
 
 ```csharp
-public string Representation { get; set; }
+public string? Representation { get; set; }
 ```
 
 #### Property Value
@@ -90,7 +83,7 @@ public string Representation { get; set; }
 Gets or sets an optional resource path.
 
 ```csharp
-public string ResourcePath { get; set; }
+public string? ResourcePath { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +95,7 @@ public string ResourcePath { get; set; }
 Gets or sets an optional resource type.
 
 ```csharp
-public string ResourceType { get; set; }
+public string? ResourceType { get; set; }
 ```
 
 #### Property Value
@@ -127,7 +120,19 @@ Gets or sets the custom event type. Values beginning with `access.`, `admin.`, o
  `system.` are reserved by the server.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-uid"/>**Uid**
+
+Gets or sets an application-defined event delivery identifier.
+
+```csharp
+public string? Uid { get; set; }
 ```
 
 #### Property Value

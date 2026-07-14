@@ -67,7 +67,7 @@ Realm JSON Web Key Set endpoint. Defaults to
  `{Issuer}/protocol/openid-connect/certs`.
 
 ```csharp
-public Uri JwksUri { get; set; }
+public Uri? JwksUri { get; set; }
 ```
 
 #### Property Value

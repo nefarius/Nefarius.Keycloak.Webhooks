@@ -21,21 +21,25 @@ public sealed class KeycloakWebhooksApiException : HttpRequestException
         string? reasonPhrase,
         string? responseBody,
         IReadOnlyDictionary<string, IEnumerable<string>> responseHeaders)
+#if NETSTANDARD2_0
         : base(message)
+#else
+        : base(message, null, statusCode)
+#endif
     {
+#if NETSTANDARD2_0
         StatusCode = statusCode;
+#endif
         ReasonPhrase = reasonPhrase;
         ResponseBody = responseBody;
         ResponseHeaders = responseHeaders;
     }
 
+#if NETSTANDARD2_0
     /// <summary>
     /// Gets the HTTP response status code.
     /// </summary>
-#if NETSTANDARD2_0
     public HttpStatusCode StatusCode { get; }
-#else
-    public new HttpStatusCode StatusCode { get; }
 #endif
 
     /// <summary>

@@ -30,6 +30,7 @@ jobs:
           xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.dll ./docs/
           xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.FastEndpoints.dll ./docs/
           xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.Client.dll ./docs/
+          pwsh ./scripts/PostProcess-ApiDocs.ps1
           # The generator writes an assembly-local index on every invocation.
           # Keep the curated cross-package index and endpoint page (the latter
           # inherits framework members the standalone tool cannot resolve).

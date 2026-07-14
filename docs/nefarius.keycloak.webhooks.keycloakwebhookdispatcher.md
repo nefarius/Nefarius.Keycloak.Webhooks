@@ -257,7 +257,7 @@ public Task OnCustomEventAsync(CustomWebhookEvent evt, CancellationToken ct)
 Called when a payload does not contain enough information to classify an event.
 
 ```csharp
-public Task OnUnknownEventAsync(string eventType, CancellationToken ct)
+public Task OnUnknownEventAsync(string? eventType, CancellationToken ct)
 ```
 
 #### Parameters

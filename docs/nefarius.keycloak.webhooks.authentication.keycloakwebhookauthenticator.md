@@ -33,7 +33,7 @@ Verifies a realm-signed JWT, including issuer, audience, time, signature, and th
  `request_body_sha256` binding.
 
 ```csharp
-public Task<KeycloakWebhookAuthenticationResult> VerifyBearerAsync(ReadOnlyMemory<Byte> body, string token, KeycloakJwtValidationOptions options, CancellationToken cancellationToken)
+public Task<KeycloakWebhookAuthenticationResult> VerifyBearerAsync(ReadOnlyMemory<Byte> body, string? token, KeycloakJwtValidationOptions options, CancellationToken cancellationToken)
 ```
 
 #### Parameters
@@ -55,7 +55,7 @@ public Task<KeycloakWebhookAuthenticationResult> VerifyBearerAsync(ReadOnlyMemor
 Verifies the hexadecimal HMAC signature over the exact raw request bytes.
 
 ```csharp
-public static KeycloakWebhookAuthenticationResult VerifyHmac(ReadOnlyMemory<Byte> body, string signature, string secret, KeycloakWebhookAuthenticationMode mode)
+public static KeycloakWebhookAuthenticationResult VerifyHmac(ReadOnlyMemory<Byte> body, string? signature, string secret, KeycloakWebhookAuthenticationMode mode)
 ```
 
 #### Parameters

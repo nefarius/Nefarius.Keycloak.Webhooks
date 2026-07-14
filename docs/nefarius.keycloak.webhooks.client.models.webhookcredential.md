@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets the credential type. Upstream v0.62 returns `secret`.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string Type { get; set; }
 Gets or sets the credential value.
 
 ```csharp
-public string Value { get; set; }
+public string? Value { get; set; }
 ```
 
 #### Property Value

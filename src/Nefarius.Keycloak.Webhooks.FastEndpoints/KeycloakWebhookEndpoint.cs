@@ -4,6 +4,7 @@ using System.Text.Json;
 using FastEndpoints;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 
 using Nefarius.Keycloak.Webhooks.Authentication;
@@ -47,6 +48,13 @@ public class KeycloakWebhookEndpoint : EndpointWithoutRequest
     /// <inheritdoc />
     public override async Task HandleAsync(CancellationToken ct)
     {
+        IHttpMaxRequestBodySizeFeature? maxBodyFeature =
+            HttpContext.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (maxBodyFeature is { IsReadOnly: false })
+        {
+            maxBodyFeature.MaxRequestBodySize = _options.MaxRequestBodySize;
+        }
+
         if (HttpContext.Request.ContentLength > _options.MaxRequestBodySize)
         {
             await WriteResponseAsync(413, "Webhook payload is too large.", ct);
@@ -56,11 +64,19 @@ public class KeycloakWebhookEndpoint : EndpointWithoutRequest
         byte[] body;
         using (MemoryStream stream = new())
         {
-            await HttpContext.Request.Body.CopyToAsync(stream, ct);
-            if (stream.Length > _options.MaxRequestBodySize)
+            byte[] buffer = new byte[81920];
+            long totalBytes = 0;
+            int bytesRead;
+            while ((bytesRead = await HttpContext.Request.Body.ReadAsync(buffer, ct)) > 0)
             {
-                await WriteResponseAsync(413, "Webhook payload is too large.", ct);
-                return;
+                totalBytes += bytesRead;
+                if (totalBytes > _options.MaxRequestBodySize)
+                {
+                    await WriteResponseAsync(413, "Webhook payload is too large.", ct);
+                    return;
+                }
+
+                await stream.WriteAsync(buffer.AsMemory(0, bytesRead), ct);
             }
 
             body = stream.ToArray();

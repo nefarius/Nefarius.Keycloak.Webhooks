@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets the authenticating client identifier.
 
 ```csharp
-public string ClientId { get; set; }
+public string? ClientId { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string ClientId { get; set; }
 Gets or sets the source IP address.
 
 ```csharp
-public string IpAddress { get; set; }
+public string? IpAddress { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public string IpAddress { get; set; }
 Gets or sets the authenticating realm identifier or name.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +54,7 @@ public string RealmId { get; set; }
 Gets or sets the authentication session identifier.
 
 ```csharp
-public string SessionId { get; set; }
+public string? SessionId { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +66,7 @@ public string SessionId { get; set; }
 Gets or sets the authenticating user identifier.
 
 ```csharp
-public string UserId { get; set; }
+public string? UserId { get; set; }
 ```
 
 #### Property Value
@@ -78,7 +78,7 @@ public string UserId { get; set; }
 Gets or sets the authenticating username.
 
 ```csharp
-public string Username { get; set; }
+public string? Username { get; set; }
 ```
 
 #### Property Value

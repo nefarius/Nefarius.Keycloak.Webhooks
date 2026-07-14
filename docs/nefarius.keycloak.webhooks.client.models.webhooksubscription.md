@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets the signing algorithm, such as `HmacSHA256` or `RS256`.
 
 ```csharp
-public string Algorithm { get; set; }
+public string? Algorithm { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string Algorithm { get; set; }
 Gets or sets the expected audience for bearer JWT authentication.
 
 ```csharp
-public string Audience { get; set; }
+public string? Audience { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public string Audience { get; set; }
 Gets or sets an authentication type from [WebhookAuthenticationTypes](./nefarius.keycloak.webhooks.client.models.webhookauthenticationtypes.md).
 
 ```csharp
-public string AuthType { get; set; }
+public string? AuthType { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +66,7 @@ public Nullable<DateTimeOffset> CreatedAt { get; set; }
 Gets or sets the identifier of the user that created the webhook.
 
 ```csharp
-public string CreatedBy { get; set; }
+public string? CreatedBy { get; set; }
 ```
 
 #### Property Value
@@ -90,7 +90,7 @@ public bool Enabled { get; set; }
 Gets or sets event type expressions, including wildcard expressions such as `*`.
 
 ```csharp
-public ISet<String> EventTypes { get; set; }
+public ISet<String>? EventTypes { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +102,7 @@ public ISet<String> EventTypes { get; set; }
 Gets or sets the server-assigned webhook identifier.
 
 ```csharp
-public string Id { get; set; }
+public string? Id { get; set; }
 ```
 
 #### Property Value
@@ -114,7 +114,7 @@ public string Id { get; set; }
 Gets or sets the realm containing the webhook.
 
 ```csharp
-public string Realm { get; set; }
+public string? Realm { get; set; }
 ```
 
 #### Property Value
@@ -127,7 +127,7 @@ Gets or sets the shared secret used for HMAC authentication.
  The API omits this property from normal webhook responses.
 
 ```csharp
-public string Secret { get; set; }
+public string? Secret { get; set; }
 ```
 
 #### Property Value
@@ -139,7 +139,7 @@ public string Secret { get; set; }
 Gets or sets the target URL.
 
 ```csharp
-public string Url { get; set; }
+public string? Url { get; set; }
 ```
 
 #### Property Value

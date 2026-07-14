@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Authentication context of the actor who triggered the event.
 
 ```csharp
-public AuthDetails AuthDetails { get; set; }
+public AuthDetails? AuthDetails { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public AuthDetails AuthDetails { get; set; }
 Legacy `ext-event-http` client identifier.
 
 ```csharp
-public string ClientId { get; set; }
+public string? ClientId { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public string ClientId { get; set; }
 Open-ended event details supplied by Keycloak.
 
 ```csharp
-public Dictionary<String, String> Details { get; set; }
+public Dictionary<String, String?>? Details { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +54,7 @@ public Dictionary<String, String> Details { get; set; }
 Error associated with a failed user or admin event.
 
 ```csharp
-public string Error { get; set; }
+public string? Error { get; set; }
 ```
 
 #### Property Value
@@ -78,7 +78,7 @@ public Dictionary<String, JsonElement> ExtensionData { get; set; }
 Original Keycloak event identifier, shared by deliveries to multiple webhooks.
 
 ```csharp
-public string Id { get; set; }
+public string? Id { get; set; }
 ```
 
 #### Property Value
@@ -90,7 +90,7 @@ public string Id { get; set; }
 Legacy `ext-event-http` source address.
 
 ```csharp
-public string IpAddress { get; set; }
+public string? IpAddress { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +102,7 @@ public string IpAddress { get; set; }
 Present on admin events only.
 
 ```csharp
-public string OperationType { get; set; }
+public string? OperationType { get; set; }
 ```
 
 #### Property Value
@@ -114,7 +114,7 @@ public string OperationType { get; set; }
 ID of the Keycloak realm in which the event occurred.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
 ```
 
 #### Property Value
@@ -126,7 +126,7 @@ public string RealmId { get; set; }
 Name of the realm in which the event occurred.
 
 ```csharp
-public string RealmName { get; set; }
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -138,7 +138,7 @@ public string RealmName { get; set; }
 JSON-encoded snapshot of the affected resource when Keycloak admin-event details are enabled.
 
 ```csharp
-public string Representation { get; set; }
+public string? Representation { get; set; }
 ```
 
 #### Property Value
@@ -150,7 +150,7 @@ public string Representation { get; set; }
 Opaque identifier of the affected admin resource, when available.
 
 ```csharp
-public string ResourceId { get; set; }
+public string? ResourceId { get; set; }
 ```
 
 #### Property Value
@@ -162,7 +162,7 @@ public string ResourceId { get; set; }
 Present on admin events only, e.g. `users/{id}/role-mappings/realm`.
 
 ```csharp
-public string ResourcePath { get; set; }
+public string? ResourcePath { get; set; }
 ```
 
 #### Property Value
@@ -174,7 +174,7 @@ public string ResourcePath { get; set; }
 Present on admin events only.
 
 ```csharp
-public string ResourceType { get; set; }
+public string? ResourceType { get; set; }
 ```
 
 #### Property Value
@@ -186,7 +186,7 @@ public string ResourceType { get; set; }
 Legacy `ext-event-http` session identifier.
 
 ```csharp
-public string SessionId { get; set; }
+public string? SessionId { get; set; }
 ```
 
 #### Property Value
@@ -212,7 +212,7 @@ Full event type string (e.g. `access.REGISTER` or `admin.USER-CREATE`).
  with an `admin.` prefix.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
 ```
 
 #### Property Value
@@ -224,7 +224,7 @@ public string Type { get; set; }
 Unique identifier of this webhook delivery.
 
 ```csharp
-public string Uid { get; set; }
+public string? Uid { get; set; }
 ```
 
 #### Property Value
@@ -236,7 +236,7 @@ public string Uid { get; set; }
 Legacy `ext-event-http` user identifier.
 
 ```csharp
-public string UserId { get; set; }
+public string? UserId { get; set; }
 ```
 
 #### Property Value

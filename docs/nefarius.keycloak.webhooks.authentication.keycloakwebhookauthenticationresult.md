@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Non-sensitive failure description.
 
 ```csharp
-public string Error { get; }
+public string? Error { get; }
 ```
 
 #### Property Value

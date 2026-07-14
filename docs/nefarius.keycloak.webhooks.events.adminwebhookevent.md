@@ -18,7 +18,7 @@ Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [
 Authentication context of the actor who triggered the event.
 
 ```csharp
-public AuthDetails AuthDetails { get; set; }
+public AuthDetails? AuthDetails { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public AuthDetails AuthDetails { get; set; }
 Open-ended event details supplied by Keycloak.
 
 ```csharp
-public IReadOnlyDictionary<String, String> Details { get; set; }
+public IReadOnlyDictionary<String, String?> Details { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public IReadOnlyDictionary<String, String> Details { get; set; }
 Error associated with a failed user or admin event.
 
 ```csharp
-public string Error { get; set; }
+public string? Error { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +54,7 @@ public string Error { get; set; }
 Original Keycloak event identifier, shared by fan-out deliveries and retries.
 
 ```csharp
-public string Id { get; set; }
+public string? Id { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +66,7 @@ public string Id { get; set; }
 Present on admin events only.
 
 ```csharp
-public string OperationType { get; set; }
+public string? OperationType { get; set; }
 ```
 
 #### Property Value
@@ -90,7 +90,7 @@ public Nullable<JsonElement> RawPayload { get; internal set; }
 ID of the Keycloak realm in which the event occurred.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +102,7 @@ public string RealmId { get; set; }
 Name of the realm in which the event occurred.
 
 ```csharp
-public string RealmName { get; set; }
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -115,7 +115,7 @@ JSON-encoded snapshot of the affected resource.
  Only populated when [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype) is `CREATE` or `UPDATE`; `null` otherwise.
 
 ```csharp
-public string Representation { get; set; }
+public string? Representation { get; set; }
 ```
 
 #### Property Value
@@ -127,7 +127,7 @@ public string Representation { get; set; }
 Opaque identifier of the affected admin resource, when available.
 
 ```csharp
-public string ResourceId { get; set; }
+public string? ResourceId { get; set; }
 ```
 
 #### Property Value
@@ -139,7 +139,7 @@ public string ResourceId { get; set; }
 Present on admin events only, e.g. `users/{id}/role-mappings/realm`.
 
 ```csharp
-public string ResourcePath { get; set; }
+public string? ResourcePath { get; set; }
 ```
 
 #### Property Value
@@ -151,7 +151,7 @@ public string ResourcePath { get; set; }
 Present on admin events only.
 
 ```csharp
-public string ResourceType { get; set; }
+public string? ResourceType { get; set; }
 ```
 
 #### Property Value
@@ -172,12 +172,10 @@ public long Time { get; set; }
 
 ### <a id="properties-type"/>**Type**
 
-Full event type string (e.g. `access.REGISTER` or `admin.USER-CREATE`).
- For admin events this is the concatenation of [WebhookBaseEvent.ResourceType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#resourcetype) and [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype)
- with an `admin.` prefix.
+Admin event type formed from the resource and operation, for example `admin.USER-CREATE`.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
 ```
 
 #### Property Value
@@ -189,7 +187,7 @@ public string Type { get; set; }
 Unique identifier of this webhook delivery.
 
 ```csharp
-public string Uid { get; set; }
+public string? Uid { get; set; }
 ```
 
 #### Property Value

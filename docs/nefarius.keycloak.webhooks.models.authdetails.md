@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Client (application) ID that initiated the request.
 
 ```csharp
-public string ClientId { get; set; }
+public string? ClientId { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string ClientId { get; set; }
 IP address of the actor.
 
 ```csharp
-public string IpAddress { get; set; }
+public string? IpAddress { get; set; }
 ```
 
 #### Property Value
@@ -43,7 +43,7 @@ Name of the realm in which the actor authenticated. The upstream wire name is
  `realmId` for historical reasons.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
 ```
 
 #### Property Value
@@ -55,7 +55,7 @@ public string RealmId { get; set; }
 Name of the realm in which the actor authenticated, when supplied by Keycloak.
 
 ```csharp
-public string RealmName { get; set; }
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -67,7 +67,7 @@ public string RealmName { get; set; }
 Keycloak session ID associated with the request.
 
 ```csharp
-public string SessionId { get; set; }
+public string? SessionId { get; set; }
 ```
 
 #### Property Value
@@ -79,7 +79,7 @@ public string SessionId { get; set; }
 Opaque Keycloak ID of the authenticated actor (user or service account).
 
 ```csharp
-public string UserId { get; set; }
+public string? UserId { get; set; }
 ```
 
 #### Property Value
@@ -91,7 +91,7 @@ public string UserId { get; set; }
 Username of the authenticated actor.
 
 ```csharp
-public string Username { get; set; }
+public string? Username { get; set; }
 ```
 
 #### Property Value

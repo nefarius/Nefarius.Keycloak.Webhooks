@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets the stored webhook event identifier.
 
 ```csharp
-public string EventId { get; set; }
+public string? EventId { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string EventId { get; set; }
 Gets or sets the normalized event type delivered to the webhook.
 
 ```csharp
-public string EventType { get; set; }
+public string? EventType { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public string EventType { get; set; }
 Gets or sets the delivery attempt identifier.
 
 ```csharp
-public string Id { get; set; }
+public string? Id { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +54,7 @@ public string Id { get; set; }
 Gets or sets the source Keycloak event identifier.
 
 ```csharp
-public string KeycloakEventId { get; set; }
+public string? KeycloakEventId { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +66,7 @@ public string KeycloakEventId { get; set; }
 Gets or sets the native Keycloak event category, normally `ADMIN` or `USER`.
 
 ```csharp
-public string KeycloakEventType { get; set; }
+public string? KeycloakEventType { get; set; }
 ```
 
 #### Property Value
@@ -78,7 +78,7 @@ public string KeycloakEventType { get; set; }
 Gets or sets the raw JSON payload sent to the target.
 
 ```csharp
-public string Payload { get; set; }
+public string? Payload { get; set; }
 ```
 
 #### Property Value
@@ -126,7 +126,7 @@ public Nullable<Int32> Status { get; set; }
 Gets or sets the human-readable target response status.
 
 ```csharp
-public string StatusMessage { get; set; }
+public string? StatusMessage { get; set; }
 ```
 
 #### Property Value
@@ -138,7 +138,7 @@ public string StatusMessage { get; set; }
 Gets or sets a brief representation of the target webhook.
 
 ```csharp
-public WebhookSubscription Webhook { get; set; }
+public WebhookSubscription? Webhook { get; set; }
 ```
 
 #### Property Value

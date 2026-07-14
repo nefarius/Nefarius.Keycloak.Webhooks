@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Gets or sets additional payload properties emitted by the installed extension version.
 
 ```csharp
-public IDictionary<String, JsonElement> AdditionalProperties { get; set; }
+public IDictionary<String, JsonElement>? AdditionalProperties { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public IDictionary<String, JsonElement> AdditionalProperties { get; set; }
 Gets or sets authentication details associated with the source event.
 
 ```csharp
-public WebhookEventAuthenticationDetails AuthDetails { get; set; }
+public WebhookEventAuthenticationDetails? AuthDetails { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,7 @@ public WebhookEventAuthenticationDetails AuthDetails { get; set; }
 Gets or sets event-specific string details.
 
 ```csharp
-public IDictionary<String, String> Details { get; set; }
+public IDictionary<String, String>? Details { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +54,7 @@ public IDictionary<String, String> Details { get; set; }
 Gets or sets an event error value.
 
 ```csharp
-public string Error { get; set; }
+public string? Error { get; set; }
 ```
 
 #### Property Value
@@ -66,7 +66,7 @@ public string Error { get; set; }
 Gets or sets the source event identifier.
 
 ```csharp
-public string Id { get; set; }
+public string? Id { get; set; }
 ```
 
 #### Property Value
@@ -78,7 +78,7 @@ public string Id { get; set; }
 Gets or sets the administrative operation type.
 
 ```csharp
-public string OperationType { get; set; }
+public string? OperationType { get; set; }
 ```
 
 #### Property Value
@@ -90,7 +90,7 @@ public string OperationType { get; set; }
 Gets or sets the realm identifier.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +102,7 @@ public string RealmId { get; set; }
 Gets or sets the realm name.
 
 ```csharp
-public string RealmName { get; set; }
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -114,7 +114,7 @@ public string RealmName { get; set; }
 Gets or sets the serialized source resource representation.
 
 ```csharp
-public string Representation { get; set; }
+public string? Representation { get; set; }
 ```
 
 #### Property Value
@@ -126,7 +126,7 @@ public string Representation { get; set; }
 Gets or sets the source resource identifier.
 
 ```csharp
-public string ResourceId { get; set; }
+public string? ResourceId { get; set; }
 ```
 
 #### Property Value
@@ -138,7 +138,7 @@ public string ResourceId { get; set; }
 Gets or sets the administrative resource path.
 
 ```csharp
-public string ResourcePath { get; set; }
+public string? ResourcePath { get; set; }
 ```
 
 #### Property Value
@@ -150,7 +150,7 @@ public string ResourcePath { get; set; }
 Gets or sets the administrative resource type.
 
 ```csharp
-public string ResourceType { get; set; }
+public string? ResourceType { get; set; }
 ```
 
 #### Property Value
@@ -174,7 +174,7 @@ public long Time { get; set; }
 Gets or sets the normalized event type.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
 ```
 
 #### Property Value
@@ -186,7 +186,7 @@ public string Type { get; set; }
 Gets or sets the unique webhook payload identifier.
 
 ```csharp
-public string Uid { get; set; }
+public string? Uid { get; set; }
 ```
 
 #### Property Value
