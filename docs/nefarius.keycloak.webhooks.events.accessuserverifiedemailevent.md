@@ -5,10 +5,10 @@ Namespace: Nefarius.Keycloak.Webhooks.Events
 A user has successfully verified their e-mail address (`access.VERIFY_EMAIL`).
 
 ```csharp
-public sealed class AccessUserVerifiedEmailEvent : WebhookBaseEvent
+public sealed class AccessUserVerifiedEmailEvent : UserWebhookEvent
 ```
 
-Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [WebhookBaseEvent](./nefarius.keycloak.webhooks.events.webhookbaseevent.md) → [AccessUserVerifiedEmailEvent](./nefarius.keycloak.webhooks.events.accessuserverifiedemailevent.md)<br>
+Inheritance [Object](https://learn.microsoft.com/dotnet/api/system.object) → [WebhookBaseEvent](./nefarius.keycloak.webhooks.events.webhookbaseevent.md) → [UserWebhookEvent](./nefarius.keycloak.webhooks.events.userwebhookevent.md) → [AccessUserVerifiedEmailEvent](./nefarius.keycloak.webhooks.events.accessuserverifiedemailevent.md)<br>
 Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.nullablecontextattribute), [NullableAttribute](https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.nullableattribute)
 
 ## Properties
@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Required action that was executed, e.g. `VERIFY_EMAIL`.
 
 ```csharp
-public string Action { get; set; }
+public string? Action { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string Action { get; set; }
 Authentication context of the actor who triggered the event.
 
 ```csharp
-public AuthDetails AuthDetails { get; set; }
+public AuthDetails? AuthDetails { get; set; }
 ```
 
 #### Property Value
@@ -42,7 +42,19 @@ public AuthDetails AuthDetails { get; set; }
 Authentication protocol used, e.g. `openid-connect`.
 
 ```csharp
-public string AuthMethod { get; set; }
+public string? AuthMethod { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-clientid"/>**ClientId**
+
+Client that initiated the user event.
+
+```csharp
+public string? ClientId { get; }
 ```
 
 #### Property Value
@@ -54,19 +66,67 @@ public string AuthMethod { get; set; }
 OIDC auth code / session correlation id.
 
 ```csharp
-public Guid CodeId { get; set; }
+public string? CodeId { get; set; }
 ```
 
 #### Property Value
 
-[Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-details"/>**Details**
+
+Open-ended event details supplied by Keycloak.
+
+```csharp
+public IReadOnlyDictionary<String, String?> Details { get; set; }
+```
+
+#### Property Value
+
+[IReadOnlyDictionary](https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[String](https://learn.microsoft.com/dotnet/api/system.string), [String](https://learn.microsoft.com/dotnet/api/system.string)><br>
 
 ### <a id="properties-email"/>**Email**
 
 E-mail address that was verified.
 
 ```csharp
-public string Email { get; set; }
+public string? Email { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-error"/>**Error**
+
+Error associated with a failed user or admin event.
+
+```csharp
+public string? Error { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-id"/>**Id**
+
+Original Keycloak event identifier, shared by fan-out deliveries and retries.
+
+```csharp
+public string? Id { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-ipaddress"/>**IpAddress**
+
+Address from which the event originated.
+
+```csharp
+public string? IpAddress { get; }
 ```
 
 #### Property Value
@@ -78,19 +138,43 @@ public string Email { get; set; }
 Present on admin events only.
 
 ```csharp
-public string OperationType { get; set; }
+public string? OperationType { get; set; }
 ```
 
 #### Property Value
 
 [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
+### <a id="properties-rawpayload"/>**RawPayload**
+
+Exact parsed JSON payload when the event was created by [KeycloakWebhookParser.Parse(String, JsonSerializerOptions)](./nefarius.keycloak.webhooks.keycloakwebhookparser.md#parsestring-jsonserializeroptions).
+
+```csharp
+public Nullable<JsonElement> RawPayload { get; internal set; }
+```
+
+#### Property Value
+
+[Nullable](https://learn.microsoft.com/dotnet/api/system.nullable-1)<[JsonElement](https://learn.microsoft.com/dotnet/api/system.text.json.jsonelement)><br>
+
 ### <a id="properties-realmid"/>**RealmId**
 
 ID of the Keycloak realm in which the event occurred.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-realmname"/>**RealmName**
+
+Name of the realm in which the event occurred.
+
+```csharp
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -102,7 +186,7 @@ public string RealmId { get; set; }
 Client redirect URI that was active during the flow.
 
 ```csharp
-public string RedirectUri { get; set; }
+public string? RedirectUri { get; set; }
 ```
 
 #### Property Value
@@ -114,7 +198,7 @@ public string RedirectUri { get; set; }
 Whether the user selected "remember me" (`true`/`false` as string).
 
 ```csharp
-public string RememberMe { get; set; }
+public string? RememberMe { get; set; }
 ```
 
 #### Property Value
@@ -127,7 +211,19 @@ JSON-encoded snapshot of the affected resource.
  Only populated when [WebhookBaseEvent.OperationType](./nefarius.keycloak.webhooks.events.webhookbaseevent.md#operationtype) is `CREATE` or `UPDATE`; `null` otherwise.
 
 ```csharp
-public string Representation { get; set; }
+public string? Representation { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-resourceid"/>**ResourceId**
+
+Opaque identifier of the affected admin resource, when available.
+
+```csharp
+public string? ResourceId { get; set; }
 ```
 
 #### Property Value
@@ -139,7 +235,7 @@ public string Representation { get; set; }
 Present on admin events only, e.g. `users/{id}/role-mappings/realm`.
 
 ```csharp
-public string ResourcePath { get; set; }
+public string? ResourcePath { get; set; }
 ```
 
 #### Property Value
@@ -151,7 +247,7 @@ public string ResourcePath { get; set; }
 Present on admin events only.
 
 ```csharp
-public string ResourceType { get; set; }
+public string? ResourceType { get; set; }
 ```
 
 #### Property Value
@@ -163,7 +259,7 @@ public string ResourceType { get; set; }
 OIDC response mode, e.g. `fragment` or `query`.
 
 ```csharp
-public string ResponseMode { get; set; }
+public string? ResponseMode { get; set; }
 ```
 
 #### Property Value
@@ -175,7 +271,19 @@ public string ResponseMode { get; set; }
 OIDC response type requested by the client, e.g. `code`.
 
 ```csharp
-public string ResponseType { get; set; }
+public string? ResponseType { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-sessionid"/>**SessionId**
+
+Keycloak user-session identifier.
+
+```csharp
+public string? SessionId { get; }
 ```
 
 #### Property Value
@@ -199,12 +307,12 @@ public long Time { get; set; }
 ID of the action token that was consumed to verify the address.
 
 ```csharp
-public Guid TokenId { get; set; }
+public string? TokenId { get; set; }
 ```
 
 #### Property Value
 
-[Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-type"/>**Type**
 
@@ -213,7 +321,7 @@ Full event type string (e.g. `access.REGISTER` or `admin.USER-CREATE`).
  with an `admin.` prefix.
 
 ```csharp
-public string Type { get; set; }
+public string? Type { get; set; }
 ```
 
 #### Property Value
@@ -222,22 +330,34 @@ public string Type { get; set; }
 
 ### <a id="properties-uid"/>**Uid**
 
-Unique identifier of this event instance.
+Unique identifier of this webhook delivery.
 
 ```csharp
-public Guid Uid { get; set; }
+public string? Uid { get; set; }
 ```
 
 #### Property Value
 
-[Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-userid"/>**UserId**
+
+User affected by the event.
+
+```csharp
+public string? UserId { get; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-username"/>**Username**
 
 Username of the user who verified their e-mail address.
 
 ```csharp
-public string Username { get; set; }
+public string? Username { get; set; }
 ```
 
 #### Property Value

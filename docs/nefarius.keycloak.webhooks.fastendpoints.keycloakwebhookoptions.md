@@ -26,6 +26,55 @@ public bool AllowAnonymous { get; set; }
 
 [Boolean](https://learn.microsoft.com/dotnet/api/system.boolean)<br>
 
+### <a id="properties-authenticationmode"/>**AuthenticationMode**
+
+Sender authentication mode. Defaults to None
+ for compatibility; authenticated production webhooks should select HMAC or bearer.
+
+```csharp
+public KeycloakWebhookAuthenticationMode AuthenticationMode { get; set; }
+```
+
+#### Property Value
+
+KeycloakWebhookAuthenticationMode<br>
+
+### <a id="properties-hmacsecret"/>**HmacSecret**
+
+Shared secret used by HMAC-SHA256 or HMAC-SHA1 authentication.
+
+```csharp
+public string HmacSecret { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-jwt"/>**Jwt**
+
+Validation settings used by bearer authentication.
+
+```csharp
+public KeycloakJwtValidationOptions Jwt { get; set; }
+```
+
+#### Property Value
+
+KeycloakJwtValidationOptions<br>
+
+### <a id="properties-maxrequestbodysize"/>**MaxRequestBodySize**
+
+Maximum accepted request-body size in bytes.
+
+```csharp
+public long MaxRequestBodySize { get; set; }
+```
+
+#### Property Value
+
+[Int64](https://learn.microsoft.com/dotnet/api/system.int64)<br>
+
 ### <a id="properties-route"/>**Route**
 
 The route pattern on which the webhook endpoint listens.

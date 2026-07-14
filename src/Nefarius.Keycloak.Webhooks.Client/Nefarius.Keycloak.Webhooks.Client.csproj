@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+        <Description>
+            Typed HTTP client for managing ext-event-webhook subscriptions, delivery attempts, and custom events in
+            Keycloak.
+        </Description>
+        <PackageTags>keycloak;webhook;events;auth;oidc;http-client</PackageTags>
+    </PropertyGroup>
+
+    <!-- System.Text.Json is in-box for net8.0+; add the package only for netstandard2.0 consumers -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="System.Text.Json" Version="10.0.9" />
+    </ItemGroup>
+
+</Project>

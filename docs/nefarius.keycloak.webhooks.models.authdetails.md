@@ -2,7 +2,7 @@
 
 Namespace: Nefarius.Keycloak.Webhooks.Models
 
-Authentication details carried on every Keycloak access event.
+Authentication details attached to an event by Keycloak.
 
 ```csharp
 public sealed class AuthDetails
@@ -18,7 +18,7 @@ Attributes [NullableContextAttribute](https://learn.microsoft.com/dotnet/api/sys
 Client (application) ID that initiated the request.
 
 ```csharp
-public string ClientId { get; set; }
+public string? ClientId { get; set; }
 ```
 
 #### Property Value
@@ -30,7 +30,7 @@ public string ClientId { get; set; }
 IP address of the actor.
 
 ```csharp
-public string IpAddress { get; set; }
+public string? IpAddress { get; set; }
 ```
 
 #### Property Value
@@ -39,10 +39,23 @@ public string IpAddress { get; set; }
 
 ### <a id="properties-realmid"/>**RealmId**
 
-ID of the realm in which the authentication took place.
+Name of the realm in which the actor authenticated. The upstream wire name is
+ `realmId` for historical reasons.
 
 ```csharp
-public string RealmId { get; set; }
+public string? RealmId { get; set; }
+```
+
+#### Property Value
+
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+### <a id="properties-realmname"/>**RealmName**
+
+Name of the realm in which the actor authenticated, when supplied by Keycloak.
+
+```csharp
+public string? RealmName { get; set; }
 ```
 
 #### Property Value
@@ -54,7 +67,7 @@ public string RealmId { get; set; }
 Keycloak session ID associated with the request.
 
 ```csharp
-public string SessionId { get; set; }
+public string? SessionId { get; set; }
 ```
 
 #### Property Value
@@ -63,22 +76,22 @@ public string SessionId { get; set; }
 
 ### <a id="properties-userid"/>**UserId**
 
-Keycloak internal ID of the authenticated actor (user or service account).
+Opaque Keycloak ID of the authenticated actor (user or service account).
 
 ```csharp
-public Guid UserId { get; set; }
+public string? UserId { get; set; }
 ```
 
 #### Property Value
 
-[Guid](https://learn.microsoft.com/dotnet/api/system.guid)<br>
+[String](https://learn.microsoft.com/dotnet/api/system.string)<br>
 
 ### <a id="properties-username"/>**Username**
 
 Username of the authenticated actor.
 
 ```csharp
-public string Username { get; set; }
+public string? Username { get; set; }
 ```
 
 #### Property Value

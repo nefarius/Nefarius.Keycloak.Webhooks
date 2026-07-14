@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Nefarius.Keycloak.Webhooks.Models;
@@ -17,13 +18,21 @@ public abstract class WebhookBaseEvent
     [JsonPropertyName("realmId")]
     public string? RealmId { get; set; }
 
-    /// <summary>Unique identifier of this event instance.</summary>
+    /// <summary>Name of the realm in which the event occurred.</summary>
+    [JsonPropertyName("realmName")]
+    public string? RealmName { get; set; }
+
+    /// <summary>Original Keycloak event identifier, shared by fan-out deliveries and retries.</summary>
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
+
+    /// <summary>Unique identifier of this webhook delivery.</summary>
     [JsonPropertyName("uid")]
-    public Guid Uid { get; set; }
+    public string? Uid { get; set; }
 
     /// <summary>Authentication context of the actor who triggered the event.</summary>
     [JsonPropertyName("authDetails")]
-    public AuthDetails AuthDetails { get; set; } = new();
+    public AuthDetails? AuthDetails { get; set; }
 
     /// <summary>
     ///     Full event type string (e.g. <c>access.REGISTER</c> or <c>admin.USER-CREATE</c>).
@@ -33,9 +42,22 @@ public abstract class WebhookBaseEvent
     [JsonPropertyName("type")]
     public string? Type { get; set; }
 
+    /// <summary>Open-ended event details supplied by Keycloak.</summary>
+    [JsonPropertyName("details")]
+    public IReadOnlyDictionary<string, string?> Details { get; set; } =
+        new Dictionary<string, string?>();
+
+    /// <summary>Error associated with a failed user or admin event.</summary>
+    [JsonPropertyName("error")]
+    public string? Error { get; set; }
+
     /// <summary>Present on admin events only.</summary>
     [JsonPropertyName("resourceType")]
     public string? ResourceType { get; set; }
+
+    /// <summary>Opaque identifier of the affected admin resource, when available.</summary>
+    [JsonPropertyName("resourceId")]
+    public string? ResourceId { get; set; }
 
     /// <summary>Present on admin events only.</summary>
     [JsonPropertyName("operationType")]
@@ -51,4 +73,18 @@ public abstract class WebhookBaseEvent
     /// </summary>
     [JsonPropertyName("representation")]
     public string? Representation { get; set; }
+
+    /// <summary>
+    ///     Exact parsed JSON payload when the event was created by <see cref="KeycloakWebhookParser.Parse(string,System.Text.Json.JsonSerializerOptions?)" />.
+    /// </summary>
+    [JsonIgnore]
+    public JsonElement? RawPayload { get; internal set; }
+
+    /// <summary>Returns an event detail value, or <c>null</c> when it is absent.</summary>
+    public string? GetDetail(string name)
+        => Details.TryGetValue(name, out string? value) ? value : null;
+
+    /// <summary>Deserializes the JSON-encoded admin representation.</summary>
+    public T? DeserializeRepresentation<T>(JsonSerializerOptions? options = null)
+        => Representation is null ? default : JsonSerializer.Deserialize<T>(Representation, options);
 }

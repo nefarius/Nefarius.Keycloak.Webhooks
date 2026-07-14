@@ -17,7 +17,7 @@ jobs:
       - name: Setup .Net SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 10.x
 
       - name: Install XMLDoc2Markdown
         run: dotnet tool install -g Nefarius.Tools.XMLDoc2Markdown
@@ -29,6 +29,13 @@ jobs:
         run: |
           xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.dll ./docs/
           xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.FastEndpoints.dll ./docs/
+          xmldoc2md ./bin/net8.0/Nefarius.Keycloak.Webhooks.Client.dll ./docs/
+          pwsh ./scripts/PostProcess-ApiDocs.ps1
+          # The generator writes an assembly-local index on every invocation.
+          # Keep the curated cross-package index and endpoint page (the latter
+          # inherits framework members the standalone tool cannot resolve).
+          git show HEAD:docs/index.md > docs/index.md
+          git show HEAD:docs/nefarius.keycloak.webhooks.fastendpoints.keycloakwebhookendpoint.md > docs/nefarius.keycloak.webhooks.fastendpoints.keycloakwebhookendpoint.md
 
       - name: Check for changes
         id: check-for-changes

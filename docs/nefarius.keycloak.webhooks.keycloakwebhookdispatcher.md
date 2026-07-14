@@ -126,6 +126,24 @@ public Task OnAccessUserVerifyEmailSentAsync(AccessUserVerifyEmailSentEvent evt,
 
 [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)
 
+### <a id="methods-onadmineventasync"/>**OnAdminEventAsync(AdminWebhookEvent, CancellationToken)**
+
+Called for a native admin event without a more specific projection.
+
+```csharp
+public Task OnAdminEventAsync(AdminWebhookEvent evt, CancellationToken ct)
+```
+
+#### Parameters
+
+`evt` [AdminWebhookEvent](./nefarius.keycloak.webhooks.events.adminwebhookevent.md)<br>
+
+`ct` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)<br>
+
+#### Returns
+
+[Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)
+
 ### <a id="methods-onadminrealmrolemappingcreatedasync"/>**OnAdminRealmRoleMappingCreatedAsync(AdminRealmRoleMappingCreatedEvent, CancellationToken)**
 
 Called when a realm role is assigned to a user.
@@ -216,17 +234,53 @@ public Task OnAdminUserUpdatedAsync(AdminUserUpdatedEvent evt, CancellationToken
 
 [Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)
 
-### <a id="methods-onunknowneventasync"/>**OnUnknownEventAsync(String, CancellationToken)**
+### <a id="methods-oncustomeventasync"/>**OnCustomEventAsync(CustomWebhookEvent, CancellationToken)**
 
-Called for any event type not recognised by the parser (i.e. [KeycloakWebhookParser.Parse(KeycloakWebhookRequest)](./nefarius.keycloak.webhooks.keycloakwebhookparser.md#parsekeycloakwebhookrequest) returned `null`).
+Called for an application-defined event published through Keycloak.
 
 ```csharp
-public Task OnUnknownEventAsync(string eventType, CancellationToken ct)
+public Task OnCustomEventAsync(CustomWebhookEvent evt, CancellationToken ct)
+```
+
+#### Parameters
+
+`evt` [CustomWebhookEvent](./nefarius.keycloak.webhooks.events.customwebhookevent.md)<br>
+
+`ct` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)<br>
+
+#### Returns
+
+[Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)
+
+### <a id="methods-onunknowneventasync"/>**OnUnknownEventAsync(String, CancellationToken)**
+
+Called when a payload does not contain enough information to classify an event.
+
+```csharp
+public Task OnUnknownEventAsync(string? eventType, CancellationToken ct)
 ```
 
 #### Parameters
 
 `eventType` [String](https://learn.microsoft.com/dotnet/api/system.string)<br>
+
+`ct` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)<br>
+
+#### Returns
+
+[Task](https://learn.microsoft.com/dotnet/api/system.threading.tasks.task)
+
+### <a id="methods-onusereventasync"/>**OnUserEventAsync(UserWebhookEvent, CancellationToken)**
+
+Called for a native user event without a more specific projection.
+
+```csharp
+public Task OnUserEventAsync(UserWebhookEvent evt, CancellationToken ct)
+```
+
+#### Parameters
+
+`evt` [UserWebhookEvent](./nefarius.keycloak.webhooks.events.userwebhookevent.md)<br>
 
 `ct` [CancellationToken](https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken)<br>
 

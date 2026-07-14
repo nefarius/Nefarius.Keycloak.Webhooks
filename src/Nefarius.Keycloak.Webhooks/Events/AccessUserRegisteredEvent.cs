@@ -5,7 +5,7 @@ namespace Nefarius.Keycloak.Webhooks.Events;
 /// <summary>
 ///     A new user has self-registered via Keycloak (<c>access.REGISTER</c>).
 /// </summary>
-public sealed class AccessUserRegisteredEvent : WebhookBaseEvent
+public sealed class AccessUserRegisteredEvent : UserWebhookEvent
 {
     /// <summary>Authentication protocol used, e.g. <c>openid-connect</c>.</summary>
     [JsonPropertyName("auth_method")]
@@ -33,7 +33,7 @@ public sealed class AccessUserRegisteredEvent : WebhookBaseEvent
 
     /// <summary>OIDC auth code / session correlation id.</summary>
     [JsonPropertyName("code_id")]
-    public Guid CodeId { get; set; }
+    public string? CodeId { get; set; }
 
     /// <summary>E-mail address of the newly registered user.</summary>
     [JsonPropertyName("email")]
