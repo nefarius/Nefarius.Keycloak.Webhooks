@@ -17,7 +17,7 @@
         <PackageReference Include="System.Text.Json" Version="10.0.9" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.19.1" />
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.19.2" />
     </ItemGroup>
 
 </Project>
