@@ -43,7 +43,12 @@ public static class ServiceCollectionExtensions
             services.Configure(configure);
         }
 
-        services.AddHttpClient("Nefarius.Keycloak.Webhooks");
+        services
+            .AddHttpClient("Nefarius.Keycloak.Webhooks")
+            .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(5)
+            });
         services.AddSingleton(serviceProvider =>
             new KeycloakWebhookAuthenticator(
                 serviceProvider
